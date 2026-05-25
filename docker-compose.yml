@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  cnn_labz:
+    build: .
+    image: cnn_labz:latest
+    container_name: cnn_labz
+    volumes:
+      - ./data:/workspace/data              # dataset persists on host
+      - ./lab1/outputs:/workspace/lab1/outputs  # outputs persist on host
+    command: python lab1/scripts/run_lab1.py
+
+  jupyter:
+    build: .
+    image: cnn_labz:latest
+    container_name: cnn_labz_jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    command: >
+      jupyter notebook
+        --ip=0.0.0.0
+        --port=8888
+        --no-browser
+        --allow-root
+        --NotebookApp.token=''

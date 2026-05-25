@@ -1,0 +1,45 @@
+# Lab 7 — U-Net + Ensemble: Forest Damage Segmentation from Satellite Imagery
+#
+# Данные: мультиспектральный tif (256×256×27)
+#   Канал 0        — бинарная маска (0 = без повреждений, 1 = повреждения)
+#   Каналы  1–13   — новые снимки Sentinel-2
+#   Каналы 14–26   — старые снимки Sentinel-2
+#
+# Поместите файл данных в lab7/data/forest.tif
+# (или укажите путь через --data)
+
+data_file: "lab7/data/forest.tif"
+
+# ---  U-Net гиперпараметры ---
+img_size: 256         # размер входного изображения
+in_channels: 16       # число признаков после prepare_snaps (разности каналов + индексы)
+filters: 32           # число фильтров первого блока U-Net
+
+epochs: 30
+batch_size: 8
+learning_rate: 0.001
+train_frac: 0.8       # доля патчей для обучения
+
+# Функции потерь для 3-х U-Net (эксперимент A)
+losses:
+  - dice
+  - bce
+  - tversky
+
+# Tversky параметры (когда loss = tversky)
+tversky_alpha: 0.7    # штраф за ложно-отрицательные
+tversky_beta: 0.3     # штраф за ложно-положительные
+
+# --- Аугментация ---
+augmentation: true
+aug_flip: true
+aug_rotate90: true
+
+# --- Ансамбль (эксперимент B) ---
+ensemble_types:
+  - average          # простое среднее softmax-выходов
+  - weighted         # взвешенное среднее по val Dice
+  - stacking         # мета-обучающийся Conv2D слой поверх конкатенации выходов
+
+stacking_epochs: 10
+stacking_lr: 0.0001

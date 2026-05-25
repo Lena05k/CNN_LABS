@@ -1,0 +1,41 @@
+# Lab 4 — Transfer Learning (Fine-tuning a CIFAR-100 pretrained model)
+#
+# Варианты моделей:
+#   Чётный вариант   → model_name: "resnet20"
+#   Нечётный вариант → model_name: "mobilenetv2"
+#
+# Классы — те же, что в ЛР1–3
+classes: [0, 55, 58]
+data_dir: "data/raw"
+
+# Pretrained model to use
+model_name: "resnet20"   # "resnet20" | "mobilenetv2"
+
+# Base training hyper-parameters (fine-tuning uses smaller LR)
+lr: 3.0e-4          # SGD learning rate
+lr_adam: 3.0e-4     # Adam / AdamW learning rate
+momentum: 0.9
+weight_decay: 1.0e-5
+weight_decay_adamw: 1.0e-2
+batch_size: 128
+epochs: 60          # frozen head converges fast; full fine-tune uses epochs_full
+
+epochs_full: 100    # epochs for full fine-tuning experiment
+
+label_smoothing: 0.1
+scheduler_step: 20
+scheduler_gamma: 0.5
+
+# Augmentation (reuse best from Lab 3)
+aug_variant: "light"
+aug_prob: 0.5
+
+# -----------------------------------------------------------------------
+# Эксперименты (run_lab4.py --all)
+# -----------------------------------------------------------------------
+
+# Experiment A: frozen head vs full fine-tuning (optimizer=sgd)
+modes: ["frozen", "full"]
+
+# Experiment B: optimizer comparison (mode=frozen)
+optimizer_variants: ["sgd", "adam", "adamw"]

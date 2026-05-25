@@ -1,0 +1,45 @@
+# Lab 8 — LSTM Time-Series Forecasting
+#
+# Два сценария:
+#   1. Синтетический ряд  — run_lab8_synthetic.py
+#   2. Реальные погодные данные — run_lab8_weather.py
+#
+# Погодные CSV: положите файлы в lab8/data/ (см. README)
+
+# --- Общие параметры LSTM ---
+hidden_size: 64
+num_layers: 2
+bidirectional: true
+dropout_p: 0.4
+
+# --- Скользящее окно ---
+seq_len: 50          # длина входного окна (число шагов)
+num_features: 1      # число прогнозируемых шагов вперёд
+
+# --- Обучение ---
+lr: 0.01
+epochs: 100
+batch_size: 64
+train_frac: 0.8
+clip_grad_norm: 1.0
+scheduler_step: 15
+scheduler_gamma: 0.1
+
+# --- Синтетический ряд ---
+synthetic_n: 1000    # число точек синтетического ряда
+synthetic_seed: 42
+noise_std: 0.05
+
+# --- Авторегрессия (AR, baseline) ---
+ar_lags: 50          # число лагов для LinearRegression
+
+# --- Погодные данные ---
+# CSV формат: year, month, day, Temperature
+# Укажите города (по варианту) — файлы <city>.csv в lab8/data/
+weather_cities:      # список CSV файлов (без расширения)
+  - city1
+  - city2
+weather_col: "Temperature"   # столбец с целевой переменной
+
+# --- Визуализация ---
+forecast_horizon: 100  # число шагов для рекурсивного прогноза AR

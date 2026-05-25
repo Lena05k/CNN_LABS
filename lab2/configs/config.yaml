@@ -1,0 +1,20 @@
+# Lab 2 — CIFAR-100 subset CNN classification
+#
+# Классы по варианту (те же, что в ЛР1):
+#   Class 1 : номер группы + 7
+#   Class 2 : номер варианта + 30
+#   Class 3 : ИУ5 → вариант+50  |  ГУИМЦ → 90  |  Иностранцы → 93
+classes: [0, 55, 58]
+
+data_dir: "data/raw"
+
+# pool_type: avg | max | stride | all
+# 'all' — последовательно запускает все три варианта и сохраняет сравнение
+pool_type: "avg"
+
+# Гиперпараметры — базовая конфигурация из ноутбука
+hidden_size: 32
+lr: 0.005
+momentum: 0.9
+batch_size: 128
+epochs: 500

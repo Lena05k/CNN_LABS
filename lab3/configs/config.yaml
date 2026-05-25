@@ -1,0 +1,47 @@
+# Lab 3 — CIFAR-100 CNN with Dropout & Data Augmentation
+#
+# Классы по варианту (те же, что в ЛР1 и ЛР2):
+#   Class 1 : номер группы + 7
+#   Class 2 : номер варианта + 30
+#   Class 3 : ИУ5 → вариант+50  |  ГУИМЦ → 90  |  Иностранцы → 93
+classes: [0, 55, 58]
+
+data_dir: "data/raw"
+
+# Model
+hidden_size: 64     # 4× больше, чем в ЛР2 (как в ноутбуке)
+
+# Base training hyper-parameters
+lr: 3.0e-3
+momentum: 0.9
+batch_size: 128
+epochs: 200         # уменьшено для быстрого запуска; ноутбук использует 500
+
+# Regularisation (baseline values — варианты задаются ниже)
+label_smoothing: 0.1
+weight_decay: 1.0e-5
+
+# LR scheduler (StepLR)
+scheduler_step: 120
+scheduler_gamma: 0.5
+
+# Augmentation
+aug_variant: "light"   # none | light | heavy
+aug_prob: 0.5          # вероятность применения аугментации к каждому примеру
+
+# Dropout
+dropout_p: 0.2         # вероятность дропаута для первого Dropout2d-слоя
+                       # второй Dropout2d получает min(dropout_p + 0.1, 0.9)
+
+# -----------------------------------------------------------------------
+# Варианты для сравнения (используются run_lab3.py при запуске с --all)
+# -----------------------------------------------------------------------
+
+# Experiment A: три значения дропаута (фиксировано: aug=light, wd=1e-5)
+dropout_variants: [0.0, 0.2, 0.5]
+
+# Experiment B: три штрафа за сложность модели (фиксировано: aug=light, dropout=0.2)
+weight_decay_variants: [0.0, 1.0e-5, 1.0e-3]
+
+# Experiment C: три варианта аугментации (фиксировано: dropout=0.2, wd=1e-5)
+aug_variants: ["none", "light", "heavy"]

@@ -1,0 +1,31 @@
+# Lab 6 — PointNet: Tree Species Classification from Point Clouds
+#
+# Требуется файл набора данных:
+#   Чётный вариант   → data_file: "lab6/data/v2.h5"
+#   Нечётный вариант → data_file: "lab6/data/v1.h5"
+#
+# Скачайте h5-файл из репозитория курса и положите в lab6/data/
+
+data_file: "lab6/data/v1.h5"      # v1 (нечётный) | v2 (чётный)
+
+# Классы по варианту (должны присутствовать в файле):
+classes:
+  0: "Рябина"
+  1: "Ель"
+  2: "Сосна"
+  3: "Дуб"
+  4: "Береза"
+
+# PointNet hyper-parameters
+num_points: 4096
+batch_size: 64
+epochs: 30          # ноутбук: 10; 30 даёт лучший результат
+learning_rate: 0.001
+optimizer: "sgd"    # sgd | adam
+
+# Cross-validation
+n_folds: 5
+
+# Augmentation (point jitter + random subsampling)
+aug_sigma: 0.005   # Gaussian noise std added to point coordinates
+aug_n_repeats: 4   # how many augmented copies per fold
